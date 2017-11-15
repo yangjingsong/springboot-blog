@@ -32,6 +32,9 @@ public class UserController {
     @RequestMapping("/login")
     public String loginPage(HttpServletRequest request, Model model, HttpServletResponse response) {
         Cookie cookies[] = request.getCookies();
+        if (cookies == null) {
+            return "login";
+        }
         for (Cookie c : cookies) {
             String username = c.getValue();
             if (username != null) {
@@ -46,13 +49,14 @@ public class UserController {
     }
 
     @RequestMapping("/dologin")
-    public String doLogin(HttpServletResponse response, User user, Model model) {
+    public String doLogin(HttpServletRequest request,HttpServletResponse response, User user, Model model) {
 
         if (userService.login(user.getUsername(), user.getPassword())) {
             Cookie cookie = new Cookie("username", user.getUsername());
             cookie.setMaxAge(24 * 60 * 60);
             model.addAttribute("user", user);
             response.addCookie(cookie);
+            request.getSession().setAttribute("user",user );
             return "redirect:/admin";
         } else {
             model.addAttribute("error", "用户名密码错误");
@@ -62,14 +66,14 @@ public class UserController {
 
     @RequestMapping("")
     public String articleIndex(Model model) {
-        model.addAttribute("articles",articleDao.findAll());
+        model.addAttribute("articles", articleDao.findAll());
         return "index";
     }
 
     @RequestMapping("/write")
-    public String write(Model model){
-        model.addAttribute("article",new Article());
-        model.addAttribute("categories",categoryDao.findAll());
+    public String write(Model model) {
+        model.addAttribute("article", new Article());
+        model.addAttribute("categories", categoryDao.findAll());
         return "write";
     }
 
