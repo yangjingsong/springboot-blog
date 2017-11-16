@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @RequestMapping("/dologin")
-    public String doLogin(HttpServletRequest request,HttpServletResponse response, User user, Model model) {
+    public String doLogin(HttpServletRequest request, HttpServletResponse response, User user, Model model) {
 
         if (userService.login(user.getUsername(), user.getPassword())) {
             Cookie cookie = new Cookie("username", user.getUsername());
@@ -58,7 +58,7 @@ public class UserController {
             //cookie.setDomain("http://localhost:8081/");
             model.addAttribute("user", user);
             response.addCookie(cookie);
-            request.getSession().setAttribute("user",user );
+            request.getSession().setAttribute("user", user);
             return "redirect:/admin";
         } else {
             model.addAttribute("error", "用户名密码错误");
@@ -79,6 +79,24 @@ public class UserController {
         return "write";
     }
 
+
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        Cookie cookies[] = request.getCookies();
+        for (Cookie c : cookies) {
+            String username = c.getValue();
+            if (username != null) {
+                User user = userService.findByName(username);
+                if (user!=null){
+                    Cookie cookie = new Cookie("username", user.getUsername());
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
+                }
+            }
+        }
+        return "redirect:/admin/login";
+    }
 
 
 }
