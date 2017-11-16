@@ -57,4 +57,10 @@ public class ArticleController {
         model.addAttribute("article",new Article());
         return "update";
     }
+
+    @RequestMapping("/delete/{id}")
+    public String delete(@PathVariable("id")String id){
+        articleDao.delete(id);
+        return "redirect:/admin";
+    }
 }

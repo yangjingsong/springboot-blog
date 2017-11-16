@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Created by yjs on 2017/11/14.
  */
-public interface ArticleDao extends JpaRepository<Article,Long> {
+public interface ArticleDao extends JpaRepository<Article,String> {
 
     Article findById(String id);
 }

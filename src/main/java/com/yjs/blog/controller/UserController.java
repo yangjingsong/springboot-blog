@@ -54,7 +54,7 @@ public class UserController {
         if (userService.login(user.getUsername(), user.getPassword())) {
             Cookie cookie = new Cookie("username", user.getUsername());
             cookie.setMaxAge(24 * 60 * 60);
-            cookie.setPath("/");
+            cookie.setPath("/");//整个应用路径都可使用该cookie
             //cookie.setDomain("http://localhost:8081/");
             model.addAttribute("user", user);
             response.addCookie(cookie);
@@ -78,5 +78,7 @@ public class UserController {
         model.addAttribute("categories", categoryDao.findAll());
         return "write";
     }
+
+
 
 }
