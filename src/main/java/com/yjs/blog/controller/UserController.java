@@ -54,6 +54,8 @@ public class UserController {
         if (userService.login(user.getUsername(), user.getPassword())) {
             Cookie cookie = new Cookie("username", user.getUsername());
             cookie.setMaxAge(24 * 60 * 60);
+            cookie.setPath("/");
+            //cookie.setDomain("http://localhost:8081/");
             model.addAttribute("user", user);
             response.addCookie(cookie);
             request.getSession().setAttribute("user",user );
