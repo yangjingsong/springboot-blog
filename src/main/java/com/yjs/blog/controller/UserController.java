@@ -8,6 +8,7 @@ import com.yjs.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -41,7 +42,7 @@ public class UserController {
             if (id != null) {
                 User user = userService.findById(id);
                 if (user != null) {
-                    return "redirect:/admin";
+                    return "redirect:/admin/"+user.getId();
                 }
             }
 
@@ -60,16 +61,16 @@ public class UserController {
             model.addAttribute("user", user);
             response.addCookie(cookie);
             request.getSession().setAttribute("user", user);
-            return "redirect:/admin";
+            return "redirect:/admin/" + u.getId();
         } else {
             model.addAttribute("error", "用户名密码错误");
             return "login";
         }
     }
 
-    @RequestMapping("")
-    public String articleIndex(Model model) {
-        model.addAttribute("articles", articleDao.findAll());
+    @RequestMapping("/{uId}")
+    public String articleIndex(Model model, @PathVariable("uId") String uId) {
+        model.addAttribute("articles", articleDao.findByAuthorId(uId));
         return "index";
     }
 
@@ -116,8 +117,8 @@ public class UserController {
             cookie.setPath("/");//整个应用路径都可使用该cookie
             model.addAttribute("user", user);
             response.addCookie(cookie);
-            request.getSession().setAttribute("user", user);
-            return "redirect:/admin";
+            request.getSession().setAttribute("user", u);
+            return "redirect:/admin/"+u.getId();
         }
 
     }

@@ -31,7 +31,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
         Cookie cookies[] = request.getCookies();
         if (cookies == null) {
-            return super.preHandle(request, response, handler);
+            response.sendRedirect(request.getContextPath() + "/admin/login");
+            return false;
         }
         boolean hasUser = false;
         for (Cookie c : cookies) {
@@ -40,6 +41,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                 User user = userService.findById(id);
                 if (user != null) {
                     hasUser = true;
+                    break;
                 }
             }
 

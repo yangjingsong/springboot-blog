@@ -35,6 +35,9 @@ public class Article {
     @Column(name = "date", columnDefinition = "varchar(64)")
     private String date;
 
+    @Column(name = "author_id")
+    private String authorId;
+
 
     public String getId() {
         return id;
@@ -82,5 +85,13 @@ public class Article {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
     }
 }
