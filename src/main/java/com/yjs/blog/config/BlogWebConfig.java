@@ -17,7 +17,9 @@ public class BlogWebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         super.addInterceptors(registry);
-        registry.addInterceptor(loginInterceptor).excludePathPatterns("/admin/login","/admin/dologin");
+        registry.addInterceptor(loginInterceptor)
+                .excludePathPatterns("/admin/login","/admin/dologin")
+        .excludePathPatterns("/admin/register").excludePathPatterns("/admin/doregister");
 
     }
 }

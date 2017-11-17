@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +56,6 @@ public class UserController {
             Cookie cookie = new Cookie("username", user.getUsername());
             cookie.setMaxAge(24 * 60 * 60);
             cookie.setPath("/");//整个应用路径都可使用该cookie
-            //cookie.setDomain("http://localhost:8081/");
             model.addAttribute("user", user);
             response.addCookie(cookie);
             request.getSession().setAttribute("user", user);
@@ -87,7 +87,7 @@ public class UserController {
             String username = c.getValue();
             if (username != null) {
                 User user = userService.findByName(username);
-                if (user!=null){
+                if (user != null) {
                     Cookie cookie = new Cookie("username", user.getUsername());
                     cookie.setMaxAge(0);
                     cookie.setPath("/");
@@ -98,5 +98,27 @@ public class UserController {
         return "redirect:/admin/login";
     }
 
+    @RequestMapping("/register")
+    public String register() {
+        return "register";
+    }
+
+    @RequestMapping(value = "/doregister", method = RequestMethod.POST)
+    public String doRegister(HttpServletResponse response, HttpServletRequest request, Model model, User user) {
+        if (userService.findByName(user.getUsername()) != null) {
+            model.addAttribute("error", "用户名已存在");
+            return "register";
+        } else {
+            userService.insert(user);
+            Cookie cookie = new Cookie("username", user.getUsername());
+            cookie.setMaxAge(24 * 60 * 60);
+            cookie.setPath("/");//整个应用路径都可使用该cookie
+            model.addAttribute("user", user);
+            response.addCookie(cookie);
+            request.getSession().setAttribute("user", user);
+            return "redirect:/admin";
+        }
+
+    }
 
 }
