@@ -14,21 +14,21 @@ public class UserService {
     @Autowired
     UserDao userDao;
 
-    public boolean login(String username, String password) {
-        User user = userDao.findByUsernameAndPassword(username, password);
-        if (user == null) {
-            return false;
-        } else {
-            return true;
-        }
+    public User login(String username, String password) {
+        return userDao.findByUsernameAndPassword(username, password);
+
     }
 
     public User findByName(String username){
         return userDao.findByUsername(username);
     }
 
-    public void insert(User user){
-        userDao.save(user);
+    public User insert(User user){
+        return userDao.save(user);
+    }
+
+    public User findById(String id){
+        return userDao.findById(id);
     }
 
 }

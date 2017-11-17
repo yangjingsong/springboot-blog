@@ -37,9 +37,9 @@ public class UserController {
             return "login";
         }
         for (Cookie c : cookies) {
-            String username = c.getValue();
-            if (username != null) {
-                User user = userService.findByName(username);
+            String id = c.getValue();
+            if (id != null) {
+                User user = userService.findById(id);
                 if (user != null) {
                     return "redirect:/admin";
                 }
@@ -52,8 +52,9 @@ public class UserController {
     @RequestMapping("/dologin")
     public String doLogin(HttpServletRequest request, HttpServletResponse response, User user, Model model) {
 
-        if (userService.login(user.getUsername(), user.getPassword())) {
-            Cookie cookie = new Cookie("username", user.getUsername());
+        User u = userService.login(user.getUsername(), user.getPassword());
+        if (u != null) {
+            Cookie cookie = new Cookie("id", u.getId());
             cookie.setMaxAge(24 * 60 * 60);
             cookie.setPath("/");//整个应用路径都可使用该cookie
             model.addAttribute("user", user);
@@ -84,11 +85,11 @@ public class UserController {
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         Cookie cookies[] = request.getCookies();
         for (Cookie c : cookies) {
-            String username = c.getValue();
-            if (username != null) {
-                User user = userService.findByName(username);
+            String id = c.getValue();
+            if (id != null) {
+                User user = userService.findById(id);
                 if (user != null) {
-                    Cookie cookie = new Cookie("username", user.getUsername());
+                    Cookie cookie = new Cookie("id", user.getId());
                     cookie.setMaxAge(0);
                     cookie.setPath("/");
                     response.addCookie(cookie);
@@ -109,8 +110,8 @@ public class UserController {
             model.addAttribute("error", "用户名已存在");
             return "register";
         } else {
-            userService.insert(user);
-            Cookie cookie = new Cookie("username", user.getUsername());
+            User u = userService.insert(user);
+            Cookie cookie = new Cookie("id", u.getId());
             cookie.setMaxAge(24 * 60 * 60);
             cookie.setPath("/");//整个应用路径都可使用该cookie
             model.addAttribute("user", user);

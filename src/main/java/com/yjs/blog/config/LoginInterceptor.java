@@ -35,9 +35,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         }
         boolean hasUser = false;
         for (Cookie c : cookies) {
-            String username = c.getValue();
-            if (username != null) {
-                User user = userService.findByName(username);
+            String id = c.getValue();
+            if (id != null) {
+                User user = userService.findById(id);
                 if (user != null) {
                     hasUser = true;
                 }
