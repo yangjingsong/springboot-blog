@@ -4,7 +4,6 @@ import com.yjs.blog.dao.ArticleDao;
 import com.yjs.blog.dao.CategoryDao;
 import com.yjs.blog.entity.Article;
 import com.yjs.blog.entity.User;
-import com.yjs.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,10 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 @RequestMapping("/admin")
-public class UserController {
+public class UserController extends BaseController {
 
-    @Autowired
-    UserService userService;
     @Autowired
     CategoryDao categoryDao;
 
@@ -33,19 +30,9 @@ public class UserController {
 
     @RequestMapping("/login")
     public String loginPage(HttpServletRequest request, Model model, HttpServletResponse response) {
-        Cookie cookies[] = request.getCookies();
-        if (cookies == null) {
-            return "login";
-        }
-        for (Cookie c : cookies) {
-            String id = c.getValue();
-            if (id != null) {
-                User user = userService.findById(id);
-                if (user != null) {
-                    return "redirect:/admin/"+user.getId();
-                }
-            }
-
+        String uid = getUid(request);
+        if (uid != null) {
+            return "redirect:/admin/" + uid;
         }
         return "login";
     }
@@ -118,7 +105,7 @@ public class UserController {
             model.addAttribute("user", user);
             response.addCookie(cookie);
             request.getSession().setAttribute("user", u);
-            return "redirect:/admin/"+u.getId();
+            return "redirect:/admin/" + u.getId();
         }
 
     }
