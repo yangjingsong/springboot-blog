@@ -23,8 +23,8 @@
         </div>
     </div>
 </div>
-<form action="/blog/writeComment" class="form-signin" method="post">
-    <input type="text" id="inputEmail" name="username" class="form-control" placeholder="写评论" required autofocus>
+<form th:action="@{'/blog/writeComment/'+${articleId}}" class="form-signin" method="post" th:object="${comment}">
+    <input type="text" id="inputEmail" name="comment" th:field="*{comment}" class="form-control" placeholder="写评论" required autofocus>
     <button class="btn btn-lg btn-primary btn-block" type="submit">评论</button>
 </form>
 
