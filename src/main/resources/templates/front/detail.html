@@ -23,8 +23,21 @@
         </div>
     </div>
 </div>
+
+<table class="table">
+    <tr class="info">
+        <td>评论</td>
+
+    </tr>
+    <tr th:each="comments:${comments}">
+        <td th:text="${comments.comment}"></td>
+
+    </tr>
+</table>
+
 <form th:action="@{'/blog/writeComment/'+${articleId}}" class="form-signin" method="post" th:object="${comment}">
-    <input type="text" id="inputEmail" name="comment" th:field="*{comment}" class="form-control" placeholder="写评论" required autofocus>
+    <input type="text" id="inputEmail" name="comment" th:field="*{comment}" class="form-control" placeholder="写评论"
+           required autofocus>
     <button class="btn btn-lg btn-primary btn-block" type="submit">评论</button>
 </form>
 
