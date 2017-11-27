@@ -19,7 +19,8 @@ public class BlogWebConfig extends WebMvcConfigurerAdapter {
         super.addInterceptors(registry);
         registry.addInterceptor(loginInterceptor)
                 .excludePathPatterns("/admin/login","/admin/dologin")
-        .excludePathPatterns("/admin/register").excludePathPatterns("/admin/doregister");
+        .excludePathPatterns("/admin/register").excludePathPatterns("/admin/doregister")
+        .excludePathPatterns("/blog/index");
 
     }
 }

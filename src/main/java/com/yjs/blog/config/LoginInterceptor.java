@@ -29,6 +29,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 //        }
         //   return "login";
 
+        if (request.getServletPath().equals("/blog")){
+            return true;
+        }
+
         Cookie cookies[] = request.getCookies();
         if (cookies == null) {
             response.sendRedirect(request.getContextPath() + "/admin/login");
