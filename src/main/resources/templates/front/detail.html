@@ -28,11 +28,13 @@
     <tr class="info">
         <td>评论人</td>
         <td>评论</td>
+        <td>评论时间</td>
 
     </tr>
     <tr th:each="comments:${comments}">
         <td th:text="${comments.user.username}"></td>
         <td th:text="${comments.comment}"></td>
+        <td th:text="${comments.createTime}"></td>
 
     </tr>
 </table>
