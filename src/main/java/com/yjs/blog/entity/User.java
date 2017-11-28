@@ -9,7 +9,7 @@ import javax.persistence.*;
  * Created by yjs on 2017/11/14.
  */
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(generator = "uuid")

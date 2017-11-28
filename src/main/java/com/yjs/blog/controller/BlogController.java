@@ -5,6 +5,7 @@ import com.yjs.blog.dao.CommentDao;
 import com.yjs.blog.entity.Article;
 import com.yjs.blog.entity.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -53,7 +54,7 @@ public class BlogController extends BaseController {
         model.addAttribute("article", article);
         model.addAttribute("articleId", id);
         model.addAttribute("comment", new Comment());
-        model.addAttribute("comments", commentDao.findByArticleId(id));
+        model.addAttribute("comments", commentDao.findByArticleId(id,new Sort(Sort.Direction.DESC,"createTime")));
         return "front/detail";
 
     }
@@ -62,7 +63,7 @@ public class BlogController extends BaseController {
     public String writeComment(HttpServletRequest request,
                                @PathVariable(name = "articleId") String articleId,
                                @ModelAttribute(value = "comment") Comment comment) {
-        comment.setCommentId(getUid(request));
+        comment.setUser(userService.findById(getUid(request)));
         comment.setArticleId(articleId);
         commentDao.save(comment);
 
